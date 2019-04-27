@@ -12,7 +12,6 @@ function App() {
         <div class="orders"><h2>Orders</h2></div>
         <div class="input"><h2>Input</h2></div>
         <div class="chart">
-          <h2>Chart</h2>
           <Chart data={[
             {time: '0:00', '€/$': 0.32},
             {time: '1:00', '€/$': 0.41},

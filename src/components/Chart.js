@@ -1,11 +1,10 @@
 import React from 'react'
-import {LineChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Line} from 'recharts'
+import {ResponsiveContainer, LineChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Line} from 'recharts'
 
 function Chart({data}) {
   return (
-    <LineChart 
-      width={730}
-      height={250}
+    <ResponsiveContainer width="90%">
+    <LineChart
       data={data}
       margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
     >
@@ -16,6 +15,7 @@ function Chart({data}) {
       <Legend />
       <Line dataKey="€/$" stroke="#8884d8" />
     </LineChart>
+    </ResponsiveContainer>
   )
 }
 
