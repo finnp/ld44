@@ -14,22 +14,6 @@ const GlobalStyle = createGlobalStyle`
     overflow: hidden;
   }
 
-  body::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: repeating-linear-gradient(
-        0deg,
-        rgba(0, 0, 0, 0.15),
-        rgba(0, 0, 0, 0.15) 1px,
-        transparent 1px,
-        transparent 2px
-      );
-    }
-
   ::selection {
     background: #0080FF;
     text-shadow: none;
