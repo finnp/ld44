@@ -9,7 +9,7 @@ const GlobalStyle = createGlobalStyle`
     );
     height: 100vh;
     color: white;
-    font: 1.3rem Inconsolata, monospace;
+    font: 1.5rem Inconsolata, monospace;
     text-shadow: 0 0 5px #C8C8C8;
     overflow: hidden;
   }
@@ -40,7 +40,7 @@ const GlobalStyle = createGlobalStyle`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
-  grid-template-areas: "orders chart chart chart" "orders chart chart chart" "orders input input input";
+  grid-template-areas: "orders chart chart chart" "orders chart chart chart" "orders input input money";
 }
 
 .orders { grid-area: orders; }
