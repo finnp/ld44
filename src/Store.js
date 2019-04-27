@@ -25,7 +25,7 @@ export function Store ({children}) {
   const [day, setDay] = useState(1)
 
   const [resources, setResources] = useState({
-    USD: 900,
+    USD: 1800,
     EUR: 1000
   })
 
@@ -47,7 +47,6 @@ export function Store ({children}) {
       setTime(0)
       setDay(day + 1)
     } else {
-      console.log(currencies)
       addStock({time: time, '€/$': currencies['EUR'] / currencies['USD']})
     }
   }
@@ -89,11 +88,17 @@ export function Store ({children}) {
 
   function acceptOrder ({id, from, to, type}) {
     const direction = type === 'buy' ? 1 : -1
-    updateResources({
+
+    const updatedResources = {
       [from.currency]: resources[from.currency] - direction * from.amount,
       [to.currency]: resources[to.currency] + direction * to.amount
-    })
-    setOrders(orders.filter(order => order.id !== id))
+    }
+
+    if (Object.values(updatedResources).every(amount => amount > 0)) {
+      updateResources(updatedResources)
+      setOrders(orders.filter(order => order.id !== id))
+    }
+
   }
 
   return <Context.Provider value={{
