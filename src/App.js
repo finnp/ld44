@@ -6,7 +6,11 @@ function App() {
   return (
     <AppContainer>
       <GlobalStyle />
-      App
+      <div class="grid-container">
+        <div class="orders"><h2>Orders</h2></div>
+        <div class="input"><h2>Input</h2></div>
+        <div class="chart"><h2>Chart</h2></div>
+      </div>
     </AppContainer>
   )
 }
