@@ -1,6 +1,6 @@
 import React, {useState, useContext} from 'react'
 import useInterval from 'react-useinterval'
-import {mapValues} from 'lodash'
+import {mapValues, sampleSize, random} from 'lodash'
 
 const Context = React.createContext()
 
@@ -42,6 +42,9 @@ export function Store ({children}) {
   function incrementTime () {
     setTime(time + 1)
     randomChangeCurrencies()
+    if (orders.length < 5 && Math.random() > 0.8) {
+      addNewOrder()
+    }
     if (time > END_OF_DAY) {
       setStock([])
       setTime(0)
@@ -59,32 +62,32 @@ export function Store ({children}) {
     setStock([...stock, datapoint])
   }
 
-  const [orders, setOrders] = useState([
-    {
-      id: 1,
-      type: 'buy',
+  const [orders, setOrders] = useState([])
+
+  function addNewOrder () {
+    const [fromCurrency, toCurrency] = sampleSize(Object.keys(currencies), 2)
+    const type = Math.random() > 0.5 ? 'buy' : 'sell'
+
+    const rate = currencies[fromCurrency] /  currencies[toCurrency]
+
+    const fromAmount = random(1, 50) * 100
+
+    const toAmount = Math.round(type === 'buy' ? fromAmount * rate : fromAmount / rate)
+
+    setOrders([...orders, {
+      id: Math.random(),
+      type,
       from: {
-        currency: 'USD',
-        amount: 1000
+        currency: fromCurrency,
+        amount: fromAmount
       },
       to: {
-        currency: 'EUR',
-        amount: 700
+        currency: toCurrency,
+        amount: toAmount
       }
-    },
-    {
-      id: 2,
-      type: 'sell',
-      from: {
-        currency: 'EUR',
-        amount: 1100
-      },
-      to: {
-        currency: 'USD',
-        amount: 900
-      }
-    }
-  ])
+    }])
+  }
+
 
   function acceptOrder ({id, from, to, type}) {
     const direction = type === 'buy' ? 1 : -1
