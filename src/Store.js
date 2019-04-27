@@ -11,6 +11,8 @@ export const END_OF_DAY = 50// 390
 const MINUTE_LENGTH = 100
 
 export function Store ({children}) {
+  const [day, setDay] = useState(1)
+
   const [resources, setResources] = useState({
     USD: 5000,
     EUR: 10000,
@@ -33,6 +35,7 @@ export function Store ({children}) {
     if (time > END_OF_DAY) {
       setStock([{time: 0, '€/$': 0.32}])
       setTime(0)
+      setDay(day + 1)
     } else {
       addStock({time: time, '€/$': 0.8 * stock[stock.length - 1]['€/$'] + 0.2 * Math.random()})
     }
@@ -53,7 +56,8 @@ export function Store ({children}) {
       resources,
       updateResource,
       time,
-      stock
+      stock,
+      day
     }}>
     {children}
   </Context.Provider>
