@@ -12,7 +12,7 @@ function Chart() {
     >
       <CartesianGrid width={3} />
       <XAxis dataKey="time" type="number" domain={[0,END_OF_DAY]}/>
-      <YAxis domain={[0,1]} />
+      <YAxis domain={[0,5]} />
       <Tooltip />
       <Legend />
       <Line dataKey="€/$" stroke="#8884d8" isAnimationActive={false}/>

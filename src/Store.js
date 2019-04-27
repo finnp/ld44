@@ -1,5 +1,6 @@
 import React, {useState, useContext} from 'react'
 import useInterval from 'react-useinterval'
+import {mapValues} from 'lodash'
 
 const Context = React.createContext()
 
@@ -11,11 +12,21 @@ export const END_OF_DAY = 50// 390
 const MINUTE_LENGTH = 1000
 
 export function Store ({children}) {
+  const [currencies, setCurrencies] = useState({
+    EUR: 900,
+    USD: 1000
+  })
+
+  function randomChangeCurrencies () {
+    setCurrencies(mapValues(currencies, value => 0.8 * value + 0.2 * (2 * Math.random() - 1) * value))
+  }
+
+
   const [day, setDay] = useState(1)
 
   const [resources, setResources] = useState({
-    USD: 5000,
-    EUR: 10000
+    USD: 900,
+    EUR: 1000
   })
 
 
@@ -29,22 +40,21 @@ export function Store ({children}) {
   const [time, setTime] = useState(0)
 
   function incrementTime () {
-    // 390
     setTime(time + 1)
+    randomChangeCurrencies()
     if (time > END_OF_DAY) {
-      setStock([{time: 0, '€/$': 0.32}])
+      setStock([])
       setTime(0)
       setDay(day + 1)
     } else {
-      addStock({time: time, '€/$': 0.8 * stock[stock.length - 1]['€/$'] + 0.2 * Math.random()})
+      console.log(currencies)
+      addStock({time: time, '€/$': currencies['EUR'] / currencies['USD']})
     }
   }
 
   useInterval(incrementTime, MINUTE_LENGTH)
 
-  const [stock, setStock] = useState([
-    {time: 0, '€/$': 0.32},
-  ])
+  const [stock, setStock] = useState([])
 
   function addStock (datapoint) {
     setStock([...stock, datapoint])
