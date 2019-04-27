@@ -7,6 +7,9 @@ export default function useStore() {
   return useContext(Context)
 }
 
+export const END_OF_DAY = 50// 390
+const MINUTE_LENGTH = 100
+
 export function Store ({children}) {
   const [resources, setResources] = useState({
     USD: 5000,
@@ -25,14 +28,20 @@ export function Store ({children}) {
   const [time, setTime] = useState(0)
 
   function incrementTime () {
+    // 390
     setTime(time + 1)
-    addStock({time: time, '€/$': 0.8 * stock[stock.length - 1]['€/$'] + 0.2 * Math.random()})
+    if (time > END_OF_DAY) {
+      setStock([{time: 0, '€/$': 0.32}])
+      setTime(0)
+    } else {
+      addStock({time: time, '€/$': 0.8 * stock[stock.length - 1]['€/$'] + 0.2 * Math.random()})
+    }
   }
 
-  useInterval(incrementTime, 1000)
+  useInterval(incrementTime, MINUTE_LENGTH)
 
   const [stock, setStock] = useState([
-    {time: '0:00', '€/$': 0.32},
+    {time: 0, '€/$': 0.32},
   ])
 
   function addStock (datapoint) {

@@ -1,6 +1,6 @@
 import React from 'react'
 import {ResponsiveContainer, LineChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Line} from 'recharts'
-import useStore from '../Store'
+import useStore, {END_OF_DAY} from '../Store'
 
 function Chart() {
   const {stock} = useStore()
@@ -11,7 +11,7 @@ function Chart() {
       margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
     >
       <CartesianGrid width={3} />
-      <XAxis dataKey="time" type="number" domain={[0,200]}/>
+      <XAxis dataKey="time" type="number" domain={[0,END_OF_DAY]}/>
       <YAxis domain={[0,1]} />
       <Tooltip />
       <Legend />
