@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import {map} from 'lodash'
+import useStore from '../Store'
 
 const Amount = styled.span`
   text-align: right;
@@ -15,19 +16,13 @@ const MoneyStyled = styled.div`
   margin-right: 4em;
 `
 
-
-const state = {
-  USD: 5000,
-  EUR: 10000,
-  GBP: 20
-}
-
 export default function Money () {
+  const {resources} = useStore()
 
   return <MoneyStyled>
-    {map(state, (value, currency) => {
-      const number =  Intl.NumberFormat('en-US', { style: 'decimal', minimumFractionDigits: 2 }).format(value)
-      return <div><Currency>{currency}</Currency> <Amount>{number}</Amount></div>
+    {map(resources, (amount, currency) => {
+      const formattedAmount =  Intl.NumberFormat('en-US', { style: 'decimal', minimumFractionDigits: 2 }).format(amount)
+      return <div><Currency>{currency}</Currency> <Amount>{formattedAmount}</Amount></div>
     })}
   </MoneyStyled>
 }
