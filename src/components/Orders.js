@@ -1,5 +1,8 @@
 import React from 'react'
+import useStore from '../Store'
 
 export default function Orders () {
-  return <h2>Orders</h2>
+  const {time} = useStore()
+  const date = new Date(Date.UTC(2012, 11, 20, 8, 30, 0) + time * 1000 * 60);
+  return <h2>{date.toTimeString().split(':').slice(0,2).join(':')}</h2>
 }

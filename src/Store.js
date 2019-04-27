@@ -1,4 +1,5 @@
 import React, {useState, useContext} from 'react'
+import useInterval from 'react-useinterval'
 
 const Context = React.createContext()
 
@@ -20,10 +21,18 @@ export function Store ({children}) {
     })
   }
 
+  const [time, setTime] = useState(0)
+
+  function incrementTime () {
+    setTime(time + 1)
+  }
+
+  useInterval(incrementTime, 1000)
 
   return <Context.Provider value={{
       resources,
-      updateResource
+      updateResource,
+      time
     }}>
     {children}
   </Context.Provider>

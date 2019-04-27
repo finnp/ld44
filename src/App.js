@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import Chart from './components/Chart'
+import Orders from './components/Orders'
 import GlobalStyle from './GlobalStyle'
 import Money from './components/Money'
 import {Store} from './Store'
@@ -11,7 +12,7 @@ function App() {
       <AppContainer>
         <GlobalStyle />
         <div class="grid-container">
-          <div class="orders"><h2>Orders</h2></div>
+          <div class="orders"><Orders/></div>
           <div class="input"><h2>Input</h2></div>
           <div class="chart">
             <Chart data={[
