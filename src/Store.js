@@ -110,7 +110,8 @@ export function Store ({children}) {
       stock,
       day,
       orders,
-      acceptOrder
+      acceptOrder,
+      currencies
     }}>
     {children}
   </Context.Provider>
