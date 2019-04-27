@@ -42,9 +42,7 @@ export function Store ({children}) {
   function incrementTime () {
     setTime(time + 1)
     randomChangeCurrencies()
-    if (orders.length < 5 && Math.random() > 0.8) {
-      addNewOrder()
-    }
+    updateOrders()
     if (time > END_OF_DAY) {
       setStock([])
       setTime(0)
@@ -63,8 +61,18 @@ export function Store ({children}) {
   }
 
   const [orders, setOrders] = useState([])
+  function updateOrders () {
 
-  function addNewOrder () {
+    const newOrders = orders.length < 5 && Math.random() > 0.8 ? [createNewOrder()]: []
+
+    const updatedOrders = orders
+      .map(order => ({...order, timer: order.timer - 1}))
+      .filter(order => order.timer > 0)
+
+    setOrders([...updatedOrders, ...newOrders])
+  }
+
+  function createNewOrder () {
     const [fromCurrency, toCurrency] = sampleSize(Object.keys(currencies), 2)
     const type = Math.random() > 0.5 ? 'buy' : 'sell'
 
@@ -74,8 +82,9 @@ export function Store ({children}) {
 
     const toAmount = Math.round(type === 'buy' ? fromAmount * rate : fromAmount / rate)
 
-    setOrders([...orders, {
+    return {
       id: Math.random(),
+      timer: 20,
       type,
       from: {
         currency: fromCurrency,
@@ -85,7 +94,7 @@ export function Store ({children}) {
         currency: toCurrency,
         amount: toAmount
       }
-    }])
+    }
   }
 
 

@@ -1,8 +1,9 @@
 import React from 'react'
 import useStore from '../Store'
+import {padStart} from 'lodash'
 
 function Order ({order, onClick}) {
-  const {type, from, to} = order
+  const {type, from, to, timer} = order
   return <tr>
     <td>{type.toUpperCase()}</td>
     <td>{from.amount}</td>
@@ -10,6 +11,7 @@ function Order ({order, onClick}) {
     <td>@</td>
     <td>{to.amount}</td>
     <td>{to.currency}</td>
+    <td>0:{padStart(timer, 2, '0')}</td>
     <td><button onClick={() => onClick(order)}>ok</button></td>
   </tr>
 }
