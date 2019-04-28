@@ -8,7 +8,7 @@ export default function useStore() {
   return useContext(Context)
 }
 
-export const END_OF_DAY = 50// 390
+export const END_OF_DAY = 390
 const MINUTE_LENGTH = 1000
 
 export function Store ({children}) {
@@ -25,8 +25,8 @@ export function Store ({children}) {
   const [day, setDay] = useState(1)
 
   const [resources, setResources] = useState({
-    USD: 1800,
-    EUR: 1000
+    USD: 4000,
+    EUR: 0
   })
 
 
@@ -39,20 +39,25 @@ export function Store ({children}) {
 
   const [time, setTime] = useState(0)
 
-  function incrementTime () {
-    setTime(time + 1)
-    randomChangeCurrencies()
-    updateOrders()
-    if (time > END_OF_DAY) {
-      setStock([])
-      setTime(0)
-      setDay(day + 1)
+  function tick() {
+    if (time >= END_OF_DAY) {
+      endDay()
     } else {
+      setTime(time + 1)
+      randomChangeCurrencies()
+      updateOrders()
       addStock({time: time, '€/$': currencies['EUR'] / currencies['USD']})
     }
   }
 
-  useInterval(incrementTime, MINUTE_LENGTH)
+  function endDay() {
+    setStock([])
+    setTime(0)
+    setOrders([])
+    setDay(day + 1)
+  }
+
+  useInterval(tick, MINUTE_LENGTH)
 
   const [stock, setStock] = useState([])
 
@@ -61,6 +66,7 @@ export function Store ({children}) {
   }
 
   const [orders, setOrders] = useState([])
+
   function updateOrders () {
 
     const newOrders = orders.length < 5 && Math.random() > 0.8 ? [createNewOrder()]: []
