@@ -29,13 +29,13 @@ export default function Game() {
           Day {day} {date.toTimeString().split(':').slice(0,2).join(':')}
         </Container>
         <Container title="Money">
-          ${money}
+          ${money.toLocaleString('en-US')}
         </Container>
       </FlexContainer>
       {upgrade && (
         <Container title="Shop">
           <FullWidthButton disabled={upgrade.disabled} warning onClick={upgrade.action}>
-            Buy {upgrade.name} ${upgrade.price}
+            Buy {upgrade.name} ${upgrade.price.toLocaleString('en-US')}
           </FullWidthButton>
         </Container>
       )}
@@ -46,14 +46,14 @@ export default function Game() {
           onClick={hire}
           primary
         >
-          Hire broker ${hireCost}
+          Hire broker ${hireCost.toLocaleString('en-US')}
         </FullWidthButton>
         <FullWidthButton 
           disabled={!canHireManager()}
           onClick={hireManager}
           primary
         >
-          Hire manager ${hireManagerCost}
+          Hire manager ${hireManagerCost.toLocaleString('en-US')}
         </FullWidthButton>
       </Container>
       {possessions.length > 0 && (
@@ -73,7 +73,7 @@ function Worker({amount, index, type}) {
   return (
     <WorkerContainer>
       {type === 'broker' ? <BrokerSprite /> : <ManagerSprite />} 
-      ${amount}
+      ${amount.toLocaleString('en-US')}
       <Button onClick={collect.bind(null, index)} success>Collect</Button>
     </WorkerContainer>
   )
