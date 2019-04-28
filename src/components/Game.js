@@ -20,7 +20,13 @@ export default function Game() {
       </FlexContainer>
       <Container title="Workforce">
         {workers.map((worker, index) => <Worker index={index} {...worker} />)}
-        <HireButton onClick={hire} primary>Hire ${hireCost}</HireButton>
+        <HireButton 
+          disabled={money < hireCost}
+          onClick={hire}
+          primary
+        >
+          Hire ${hireCost}
+        </HireButton>
       </Container>
     </GameContainer>
   )

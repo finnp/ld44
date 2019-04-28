@@ -32,7 +32,7 @@ export function Store ({children}) {
     } else {
       setTime(time + 1)
       setWorkers(workers.map(worker => (
-        {...worker, amount: worker.amount + (Math.random() > 0.3)}
+        {...worker, amount: worker.amount + random(1,5)}
       )))
     }
   }
