@@ -1,10 +1,10 @@
 import React from 'react'
 import useStore from '../Store'
-import {Container, Button, Sprite} from 'nes-react'
+import {Container, Button} from 'nes-react'
 import styled from 'styled-components'
 
 export default function Game() {
-  const {time, day, money, workers, hire, hireCost} = useStore()
+  const {time, day, money, workers, hire, hireCost, hireManager, hireManagerCost, canHireManager} = useStore()
 
   const date = new Date(Date.UTC(2012, 11, 20, 8, 30, 0) + time * 1000 * 60);
 
@@ -25,19 +25,26 @@ export default function Game() {
           onClick={hire}
           primary
         >
-          Hire ${hireCost}
+          Hire broker ${hireCost}
+        </HireButton>
+        <HireButton 
+          disabled={!canHireManager()}
+          onClick={hireManager}
+          primary
+        >
+          Hire manager ${hireManagerCost}
         </HireButton>
       </Container>
     </GameContainer>
   )
 }
 
-function Worker({amount, index}) {
+function Worker({amount, index, type}) {
   const {collect} = useStore()
 
   return (
     <WorkerContainer>
-      <Sprite sprite="bcrikko" />
+      {type === 'broker' ? <BrokerSprite /> : <ManagerSprite />} 
       ${amount}
       <Button onClick={collect.bind(null, index)} success>Collect</Button>
     </WorkerContainer>
@@ -64,3 +71,15 @@ const HireButton = styled(Button)`
   width: 100%;
   margin-top: 20px;
 `
+
+function BrokerSprite() {
+  return (
+    <img src="assets/broker.png" alt="Broker" />
+  )
+}
+
+function ManagerSprite() {
+  return (
+    <img src="assets/manager.png" alt="Manager" />
+  )
+}
