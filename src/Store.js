@@ -12,11 +12,42 @@ export const END_OF_DAY = 390
 const MINUTE_LENGTH = 400
 const INITIAL_HIRE_COST = 10
 const HIRE_COST_INCREMENT = INITIAL_HIRE_COST
-const BROKERS_PER_MANAGER = 5
+const BROKERS_PER_MANAGER = 4
 const INITIAL_HIRE_MANAGER_COST = BROKERS_PER_MANAGER * INITIAL_HIRE_COST
 const HIRE_MANAGER_COST_INCREMENT = BROKERS_PER_MANAGER * HIRE_COST_INCREMENT
 const WORKER_SKILL = BROKERS_PER_MANAGER
 const MANAGER_SKILL = BROKERS_PER_MANAGER * WORKER_SKILL
+const SKILL_INCREASE_PER_POSSESSION = 0.2
+const SHOP = [
+  {
+    name: 'Whip',
+    price: 300,
+  },
+  {
+    name: 'Motivational posters',
+    price: 700
+  },
+  {
+    name: 'Windows XP',
+    price: 5000,
+  },
+  {
+    name: 'Agile seminar',
+    price: 15000,
+  },
+  {
+    name: 'Motivational posters',
+    price: 70000,
+  },
+  {
+    name: 'Whip',
+    price: 150000,
+  },
+  {
+    name: 'Mansion',
+    price: 1000000,
+  }
+]
 
 
 export function Store ({children}) {
@@ -32,6 +63,7 @@ export function Store ({children}) {
 
   const [hireManagerCost, setHireManagerCost] = useState(INITIAL_HIRE_MANAGER_COST)
   
+  const [possessions, setPossessions] = useState([])
 
 
   function tick() {
@@ -40,7 +72,13 @@ export function Store ({children}) {
     } else {
       setTime(time + 1)
       setWorkers(workers.map(worker => (
-        {...worker, amount: worker.amount + random(1, worker.skill)}
+        {
+          ...worker,
+          amount: (
+            worker.amount + 
+            random(1, Math.round((1 + SKILL_INCREASE_PER_POSSESSION * possessions.length) * worker.skill))
+          )
+        }
       )))
     }
   }
@@ -88,7 +126,7 @@ export function Store ({children}) {
   function hireManager() {
     if (canHireManager()) {
       setMoney(money - hireManagerCost)
-      const managedBrokers = workers.filter(it => it.type === 'broker').slice(0,5)
+      const managedBrokers = workers.filter(it => it.type === 'broker').slice(0,BROKERS_PER_MANAGER)
       setWorkers(
         [
           ...workers.filter(it => !managedBrokers.find(broker => broker.id === it.id)),
@@ -102,8 +140,27 @@ export function Store ({children}) {
   function canHireManager() {
     return (
       money >= hireManagerCost &&
-      workers.filter(it => it.type === 'broker').length >= 5
+      workers.filter(it => it.type === 'broker').length >= BROKERS_PER_MANAGER
     )
+  }
+
+  function getUpgrade() {
+    const upgrade = SHOP.find(upgrade => !possessions.includes(upgrade.name))
+
+    if (!upgrade) return
+
+    const disabled = money < upgrade.price
+
+    return {
+      ...upgrade,
+      disabled,
+      action: () => {
+        if (!disabled) {
+          setMoney(money - upgrade.price)
+          setPossessions([upgrade.name, ...possessions])
+        }
+      }
+    }
   }
 
 
@@ -117,7 +174,9 @@ export function Store ({children}) {
       hireCost,
       hireManager,
       hireManagerCost,
-      canHireManager
+      canHireManager,
+      possessions,
+      getUpgrade,
     }}>
     {children}
   </Context.Provider>

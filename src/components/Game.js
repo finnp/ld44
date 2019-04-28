@@ -1,12 +1,26 @@
 import React from 'react'
 import useStore from '../Store'
-import {Container, Button} from 'nes-react'
+import {Container, Button, List} from 'nes-react'
 import styled from 'styled-components'
 
 export default function Game() {
-  const {time, day, money, workers, hire, hireCost, hireManager, hireManagerCost, canHireManager} = useStore()
+  const {
+    time,
+    day,
+    money,
+    workers,
+    hire,
+    hireCost,
+    hireManager,
+    hireManagerCost,
+    canHireManager,
+    possessions,
+    getUpgrade,
+  } = useStore()
 
-  const date = new Date(Date.UTC(2012, 11, 20, 8, 30, 0) + time * 1000 * 60);
+  const date = new Date(Date.UTC(2012, 11, 20, 8, 30, 0) + time * 1000 * 60)
+
+  const upgrade = getUpgrade()
 
   return  (
     <GameContainer>
@@ -18,23 +32,37 @@ export default function Game() {
           ${money}
         </Container>
       </FlexContainer>
+      {upgrade && (
+        <Container title="Shop">
+          <FullWidthButton disabled={upgrade.disabled} warning onClick={upgrade.action}>
+            Buy {upgrade.name} ${upgrade.price}
+          </FullWidthButton>
+        </Container>
+      )}
       <Container title="Workforce">
         {workers.map((worker, index) => <Worker index={index} {...worker} />)}
-        <HireButton 
+        <FullWidthButton 
           disabled={money < hireCost}
           onClick={hire}
           primary
         >
           Hire broker ${hireCost}
-        </HireButton>
-        <HireButton 
+        </FullWidthButton>
+        <FullWidthButton 
           disabled={!canHireManager()}
           onClick={hireManager}
           primary
         >
           Hire manager ${hireManagerCost}
-        </HireButton>
+        </FullWidthButton>
       </Container>
+      {possessions.length > 0 && (
+        <Container title="Upgrades">
+          <List>
+            {possessions.map(it => <li>{it}</li>)}
+          </List>
+        </Container>
+      )}
     </GameContainer>
   )
 }
@@ -67,7 +95,7 @@ const WorkerContainer = styled(FlexContainer)`
   margin-top: 10px; 
 `
 
-const HireButton = styled(Button)`
+const FullWidthButton = styled(Button)`
   width: 100%;
   margin-top: 20px;
 `
