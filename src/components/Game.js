@@ -4,6 +4,19 @@ import {Container, Button, List} from 'nes-react'
 import styled from 'styled-components'
 
 export default function Game() {
+  const {getUpgrade} = useStore()
+
+  const upgrade = getUpgrade()
+
+  if (!upgrade) {
+    return (
+      <GameContainer>
+        <EndScreen />
+      </GameContainer>
+    )
+    
+  }
+
   return  (
     <GameContainer>
       <FlexContainer>
@@ -175,3 +188,28 @@ function ManagerSprite() {
     <img src="assets/manager.png" alt="Manager" />
   )
 }
+
+function EndScreen() {
+  return (
+    <EndScreenContainer title="The End">
+      You made it, you fulfilled your life goal!
+      <br />
+      <br />
+      Your very own mansion!
+      <br />
+      <br />
+      But...was the time you spent worth it?
+      <br />
+      <br />
+      Remember:
+      <br />
+      <br />
+      Your life is currency
+    </EndScreenContainer>
+  )
+}
+
+const EndScreenContainer = styled(Container)`
+  margin-top: 20px;
+  text-align: center;
+`
