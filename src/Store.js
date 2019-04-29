@@ -17,6 +17,7 @@ const INITIAL_HIRE_MANAGER_COST = 100
 const HIRE_MANAGER_COST_INCREMENT = INITIAL_HIRE_MANAGER_COST
 const WORKER_SKILL = BROKERS_PER_MANAGER
 export const SKILL_INCREASE_PER_POSSESSION = 0.2
+const WORK_GAIN = 2
 
 const SHOP = [
   {
@@ -55,7 +56,7 @@ const WORKER_TYPES = ['broker', 'manager']
 export function Store ({children}) {
   const [day, setDay] = useState(1)
 
-  const [money, setMoney] = useState(INITIAL_HIRE_COST)
+  const [money, setMoney] = useState(0)
 
   const [time, setTime] = useState(0)
 
@@ -158,6 +159,10 @@ export function Store ({children}) {
     }
   }
 
+  function work() {
+    setMoney(money + WORK_GAIN)
+  }
+
 
   return <Context.Provider value={{
       time,
@@ -172,6 +177,7 @@ export function Store ({children}) {
       canHireManager,
       possessions,
       getUpgrade,
+      work
     }}>
     {children}
   </Context.Provider>

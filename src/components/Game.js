@@ -68,16 +68,28 @@ function Actions() {
     hireManagerCost,
     hire,
     hireManager,
-    canHireManager
+    canHireManager,
+    work
   } = useStore()
 
   return (
     <Container title="Actions">
       <FullWidthButton 
+        onClick={() => {
+          work()
+          new Audio('assets/collect-cash.wav').play()
+        }}
+        primary
+      >
+        Work
+      </FullWidthButton>
+      <FullWidthButton 
         disabled={money < hireCost}
         onClick={() => {
-          hire()
-          new Audio('assets/scribble.wav').play()
+          if (money >= hireCost) {
+            hire()
+            new Audio('assets/scribble.wav').play()
+          }
         }}
         primary
       >
@@ -86,8 +98,10 @@ function Actions() {
       <FullWidthButton 
         disabled={!canHireManager()}
         onClick={() => {
-          hireManager()
-          new Audio('assets/scribble.wav').play()
+          if (canHireManager()) {
+            hireManager()
+            new Audio('assets/scribble.wav').play()
+          }
         }}
         primary
       >
