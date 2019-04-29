@@ -25,13 +25,7 @@ export default function Game() {
         <Time />
         <Money />
       </FlexContainer>
-      {upgrade && (
-        <Container title="Shop">
-          <FullWidthButton disabled={upgrade.disabled} warning onClick={upgrade.action}>
-            Buy {upgrade.name} ${upgrade.price.toLocaleString('en-US')}
-          </FullWidthButton>
-        </Container>
-      )}
+      {upgrade && <Shop {...upgrade} />}
       <Container title="Workforce">
         {workers.map((worker, index) => <Worker key={index} index={index} {...worker} />)}
         <FullWidthButton 
@@ -90,6 +84,16 @@ function Money() {
   return (
     <Container title="Money">
       ${money.toLocaleString('en-US')}
+    </Container>
+  )
+}
+
+function Shop({disabled, action, name, price}) {
+  return (
+    <Container title="Shop">
+      <FullWidthButton disabled={disabled} warning onClick={action}>
+        Buy {name} ${price.toLocaleString('en-US')}
+      </FullWidthButton>
     </Container>
   )
 
