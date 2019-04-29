@@ -1,5 +1,5 @@
 import React from 'react'
-import useStore from '../Store'
+import useStore, {SKILL_INCREASE_PER_POSSESSION} from '../Store'
 import {Container, Button, List} from 'nes-react'
 import styled from 'styled-components'
 
@@ -59,7 +59,7 @@ export default function Game() {
       {possessions.length > 0 && (
         <Container title="Upgrades">
           <List>
-            {possessions.map((it, index) => <li key={index}>{it}</li>)}
+            {possessions.map((it, index) => <li key={index}>{it} (+{SKILL_INCREASE_PER_POSSESSION * 100}%)</li>)}
           </List>
         </Container>
       )}
