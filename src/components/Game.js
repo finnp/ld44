@@ -75,14 +75,20 @@ function Actions() {
     <Container title="Actions">
       <FullWidthButton 
         disabled={money < hireCost}
-        onClick={hire}
+        onClick={() => {
+          hire()
+          new Audio('assets/scribble.wav').play()
+        }}
         primary
       >
         Hire broker ${hireCost.toLocaleString('en-US')}
       </FullWidthButton>
       <FullWidthButton 
         disabled={!canHireManager()}
-        onClick={hireManager}
+        onClick={() => {
+          hireManager()
+          new Audio('assets/scribble.wav').play()
+        }}
         primary
       >
         Hire manager ${hireManagerCost.toLocaleString('en-US')}
