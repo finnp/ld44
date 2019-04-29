@@ -23,9 +23,7 @@ export default function Game() {
     <GameContainer>
       <FlexContainer>
         <Time />
-        <Container title="Money">
-          ${money.toLocaleString('en-US')}
-        </Container>
+        <Money />
       </FlexContainer>
       {upgrade && (
         <Container title="Shop">
@@ -84,6 +82,17 @@ function Time() {
       Day {day} {date.toTimeString().split(':').slice(0,2).join(':')}
     </Container>
   )
+}
+
+function Money() {
+  const {money} = useStore()
+
+  return (
+    <Container title="Money">
+      ${money.toLocaleString('en-US')}
+    </Container>
+  )
+
 }
 
 const GameContainer = styled.div`
