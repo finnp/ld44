@@ -40,7 +40,7 @@ export default function Game() {
         </Container>
       )}
       <Container title="Workforce">
-        {workers.map((worker, index) => <Worker index={index} {...worker} />)}
+        {workers.map((worker, index) => <Worker key={index} index={index} {...worker} />)}
         <FullWidthButton 
           disabled={money < hireCost}
           onClick={hire}
@@ -59,7 +59,7 @@ export default function Game() {
       {possessions.length > 0 && (
         <Container title="Upgrades">
           <List>
-            {possessions.map(it => <li>{it}</li>)}
+            {possessions.map((it, index) => <li key={index}>{it}</li>)}
           </List>
         </Container>
       )}
@@ -71,7 +71,7 @@ function Worker({amount, index, type}) {
   const {collect} = useStore()
 
   return (
-    <WorkerContainer>
+    <WorkerContainer key={index}>
       {type === 'broker' ? <BrokerSprite /> : <ManagerSprite />} 
       ${amount.toLocaleString('en-US')}
       <Button onClick={collect.bind(null, index)} success>Collect</Button>

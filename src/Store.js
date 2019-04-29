@@ -36,11 +36,11 @@ const SHOP = [
     price: 15000,
   },
   {
-    name: 'Motivational posters',
+    name: '1kg White powder',
     price: 70000,
   },
   {
-    name: 'Whip',
+    name: 'Company retreat',
     price: 150000,
   },
   {
