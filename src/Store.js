@@ -18,6 +18,7 @@ const HIRE_MANAGER_COST_INCREMENT = BROKERS_PER_MANAGER * HIRE_COST_INCREMENT
 const WORKER_SKILL = BROKERS_PER_MANAGER
 const MANAGER_SKILL = BROKERS_PER_MANAGER * WORKER_SKILL
 export const SKILL_INCREASE_PER_POSSESSION = 0.2
+
 const SHOP = [
   {
     name: 'Whip',
@@ -36,7 +37,7 @@ const SHOP = [
     price: 15000,
   },
   {
-    name: '1kg White powder',
+    name: '5kg White powder',
     price: 70000,
   },
   {
@@ -49,15 +50,28 @@ const SHOP = [
   }
 ]
 
+const WOKRER_TYPES = [
+  {
+    type: 'broker',
+    skill: WORKER_SKILL,
+    cost: INITIAL_HIRE_COST,
+  },
+  {
+    type: 'manager',
+    skill: MANAGER_SKILL,
+    cost: INITIAL_HIRE_MANAGER_COST,
+  }
+]
+
 
 export function Store ({children}) {
   const [day, setDay] = useState(1)
 
-  const [money, setMoney] = useState(0)
+  const [money, setMoney] = useState(INITIAL_HIRE_COST)
 
   const [time, setTime] = useState(0)
 
-  const [workers, setWorkers] = useState([createWorker(100)])
+  const [workers, setWorkers] = useState([])
 
   const [hireCost, setHireCost] = useState(INITIAL_HIRE_COST)
 
@@ -88,21 +102,13 @@ export function Store ({children}) {
     setDay(day + 1)
   }
 
-  function createWorker(initialAmount) {
-    return {
-      id: Math.random(),
-      type: 'broker',
-      amount: initialAmount || 0,
-      skill: WORKER_SKILL
-    }
-  }
+  function createWorker(type, initialAmount) {
+    const archetype = WOKRER_TYPES.find(it => it.type === type)
 
-  function createManager(initialAmount) {
     return {
+      ...archetype,
       id: Math.random(),
-      type: 'manager',      
       amount: initialAmount || 0,
-      skill: MANAGER_SKILL
     }
   }
 
@@ -118,7 +124,7 @@ export function Store ({children}) {
   function hire() {
     if (money >= hireCost) {
       setMoney(money - hireCost)
-      setWorkers([...workers, createWorker()])
+      setWorkers([...workers, createWorker('broker')])
       setHireCost(hireCost + HIRE_COST_INCREMENT)
     }
   }
@@ -130,7 +136,7 @@ export function Store ({children}) {
       setWorkers(
         [
           ...workers.filter(it => !managedBrokers.find(broker => broker.id === it.id)),
-          createManager(managedBrokers.reduce((acc, curr) => acc + curr.amount, 0))
+          createWorker('manager', managedBrokers.reduce((acc, curr) => acc + curr.amount, 0))
         ]
       )
       setHireManagerCost(hireManagerCost + HIRE_MANAGER_COST_INCREMENT)

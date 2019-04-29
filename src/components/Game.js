@@ -13,6 +13,7 @@ export default function Game() {
             <Time />
             <Money />
           </FlexContainer>
+          <Actions />
           <Shop />
           <Possessions />
         </InfoContainer>
@@ -36,19 +37,27 @@ function Possessions() {
 }
 
 function Workforce() {
+  const {workers} = useStore()
+
+  return (
+    <WorkforceContainer title="Workforce">
+      {workers.map((worker, index) => <Worker key={index} index={index} {...worker} />)}      
+    </WorkforceContainer>
+  )
+}
+
+function Actions() {
   const {
-    workers,
     money,
     hireCost,
-    hire,
     hireManagerCost,
+    hire,
     hireManager,
     canHireManager
   } = useStore()
 
   return (
-    <Container title="Workforce">
-      {workers.map((worker, index) => <Worker key={index} index={index} {...worker} />)}
+    <Container title="Actions">
       <FullWidthButton 
         disabled={money < hireCost}
         onClick={hire}
@@ -149,6 +158,10 @@ const InfoContainer = styled.div`
 const MoneyContainer = styled(Container)`
   min-width: 200px;
   text-align: right;
+`
+
+const WorkforceContainer = styled(Container)`
+  min-width: 464px;
 `
 
 function BrokerSprite() {
