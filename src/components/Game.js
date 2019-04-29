@@ -5,8 +5,6 @@ import styled from 'styled-components'
 
 export default function Game() {
   const {
-    time,
-    day,
     money,
     workers,
     hire,
@@ -18,16 +16,13 @@ export default function Game() {
     getUpgrade,
   } = useStore()
 
-  const date = new Date(Date.UTC(2012, 11, 20, 8, 30, 0) + time * 1000 * 60)
 
   const upgrade = getUpgrade()
 
   return  (
     <GameContainer>
       <FlexContainer>
-        <Container title="Time">
-          Day {day} {date.toTimeString().split(':').slice(0,2).join(':')}
-        </Container>
+        <Time />
         <Container title="Money">
           ${money.toLocaleString('en-US')}
         </Container>
@@ -76,6 +71,18 @@ function Worker({amount, index, type}) {
       ${amount.toLocaleString('en-US')}
       <Button onClick={collect.bind(null, index)} success>Collect</Button>
     </WorkerContainer>
+  )
+}
+
+function Time() {
+  const {day, time} = useStore()
+
+  const date = new Date(Date.UTC(2012, 11, 20, 8, 30, 0) + time * 1000 * 60)  
+
+  return (
+    <Container title="Time">
+      Day {day} {date.toTimeString().split(':').slice(0,2).join(':')}
+    </Container>
   )
 }
 
