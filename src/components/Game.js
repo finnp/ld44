@@ -96,7 +96,15 @@ function Worker({amount, index, type}) {
     <WorkerContainer key={index}>
       {type === 'broker' ? <BrokerSprite /> : <ManagerSprite />} 
       ${amount.toLocaleString('en-US')}
-      <Button onClick={collect.bind(null, index)} success>Collect</Button>
+      <Button 
+        onClick={() =>  {
+          collect(index)
+          new Audio('assets/collect-cash.wav').play()
+        }}
+        success
+      >
+        Collect
+      </Button>
     </WorkerContainer>
   )
 }
