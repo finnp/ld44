@@ -3,7 +3,12 @@ import useStore, {SKILL_INCREASE_PER_POSSESSION} from '../Store'
 import {Container, Button, List} from 'nes-react'
 import styled from 'styled-components'
 
-new Audio('assets/trading-background.m4a').play()
+const backgroundSounds = new Audio('assets/trading-background.m4a')
+backgroundSounds.addEventListener('ended', function() {
+  this.currentTime = 0;
+  this.play();
+}, false);
+backgroundSounds.play()
 
 export default function Game() {
   const {getUpgrade} = useStore()
