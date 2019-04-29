@@ -4,53 +4,62 @@ import {Container, Button, List} from 'nes-react'
 import styled from 'styled-components'
 
 export default function Game() {
-  const {
-    money,
-    workers,
-    hire,
-    hireCost,
-    hireManager,
-    hireManagerCost,
-    canHireManager,
-    possessions,
-    getUpgrade,
-  } = useStore()
-
-
-  const upgrade = getUpgrade()
-
   return  (
     <GameContainer>
       <FlexContainer>
         <Time />
         <Money />
       </FlexContainer>
-      {upgrade && <Shop {...upgrade} />}
-      <Container title="Workforce">
-        {workers.map((worker, index) => <Worker key={index} index={index} {...worker} />)}
-        <FullWidthButton 
-          disabled={money < hireCost}
-          onClick={hire}
-          primary
-        >
-          Hire broker ${hireCost.toLocaleString('en-US')}
-        </FullWidthButton>
-        <FullWidthButton 
-          disabled={!canHireManager()}
-          onClick={hireManager}
-          primary
-        >
-          Hire manager ${hireManagerCost.toLocaleString('en-US')}
-        </FullWidthButton>
-      </Container>
-      {possessions.length > 0 && (
-        <Container title="Upgrades">
-          <List>
-            {possessions.map((it, index) => <li key={index}>{it} (+{SKILL_INCREASE_PER_POSSESSION * 100}%)</li>)}
-          </List>
-        </Container>
-      )}
+      <Shop />
+      <Workforce />
+      <Possessions />
     </GameContainer>
+  )
+}
+
+function Possessions() {
+  const {possessions} = useStore()
+
+  if (possessions.length === 0) return null
+
+  return (
+    <Container title="Upgrades">
+      <List>
+        {possessions.map((it, index) => <li key={index}>{it} (+{SKILL_INCREASE_PER_POSSESSION * 100}%)</li>)}
+      </List>
+    </Container>
+  )
+}
+
+function Workforce() {
+  const {
+    workers,
+    money,
+    hireCost,
+    hire,
+    hireManagerCost,
+    hireManager,
+    canHireManager
+  } = useStore()
+
+  return (
+    <Container title="Workforce">
+      {workers.map((worker, index) => <Worker key={index} index={index} {...worker} />)}
+      <FullWidthButton 
+        disabled={money < hireCost}
+        onClick={hire}
+        primary
+      >
+        Hire broker ${hireCost.toLocaleString('en-US')}
+      </FullWidthButton>
+      <FullWidthButton 
+        disabled={!canHireManager()}
+        onClick={hireManager}
+        primary
+      >
+        Hire manager ${hireManagerCost.toLocaleString('en-US')}
+      </FullWidthButton>
+    </Container>
   )
 }
 
@@ -88,7 +97,15 @@ function Money() {
   )
 }
 
-function Shop({disabled, action, name, price}) {
+function Shop() {
+  const {getUpgrade} = useStore()
+
+  const upgrade = getUpgrade()
+
+  if (!upgrade) return null
+
+  const {disabled, action, name, price} = upgrade
+
   return (
     <Container title="Shop">
       <FullWidthButton disabled={disabled} warning onClick={action}>
