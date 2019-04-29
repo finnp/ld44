@@ -7,12 +7,16 @@ export default function Game() {
   return  (
     <GameContainer>
       <FlexContainer>
-        <Time />
-        <Money />
+        <Workforce />
+        <InfoContainer>
+          <FlexContainer>
+            <Time />
+            <Money />
+          </FlexContainer>
+          <Shop />
+          <Possessions />
+        </InfoContainer>
       </FlexContainer>
-      <Shop />
-      <Workforce />
-      <Possessions />
     </GameContainer>
   )
 }
@@ -91,9 +95,9 @@ function Money() {
   const {money} = useStore()
 
   return (
-    <Container title="Money">
+    <MoneyContainer title="Money">
       ${money.toLocaleString('en-US')}
-    </Container>
+    </MoneyContainer>
   )
 }
 
@@ -124,17 +128,27 @@ const GameContainer = styled.div`
 const FlexContainer = styled.div`
   display: flex;
   width: 100%;
-  justify-content: space-between;
+  justify-content: space-around;
 `
 
 const WorkerContainer = styled(FlexContainer)`
   align-items: center;
   margin-top: 10px; 
+  min-width: 400px;
 `
 
 const FullWidthButton = styled(Button)`
   width: 100%;
   margin-top: 20px;
+`
+
+const InfoContainer = styled.div`
+  min-width: 400px;
+`
+
+const MoneyContainer = styled(Container)`
+  min-width: 200px;
+  text-align: right;
 `
 
 function BrokerSprite() {
